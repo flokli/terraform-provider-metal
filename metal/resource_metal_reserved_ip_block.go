@@ -139,6 +139,14 @@ func resourceMetalReservedIPBlock() *schema.Resource {
 		Computed: true,
 	}
 
+	reservedBlockSchema["tags"] = &schema.Schema{
+		Type:        schema.TypeList,
+		ForceNew:    true,
+		Description: "Tags attached to the reserved block",
+		Optional:    true,
+		Elem:        &schema.Schema{Type: schema.TypeString},
+	}
+
 	return &schema.Resource{
 		Create: resourceMetalReservedIPBlockCreate,
 		Read:   resourceMetalReservedIPBlockRead,
@@ -185,6 +193,11 @@ func resourceMetalReservedIPBlockCreate(d *schema.ResourceData, meta interface{}
 	desc, ok := d.GetOk("description")
 	if ok {
 		req.Description = desc.(string)
+	}
+
+	tags := d.Get("tags.#").(int)
+	if tags > 0 {
+		req.Tags = convertStringArr(d.Get("tags").([]interface{}))
 	}
 
 	projectID := d.Get("project_id").(string)
@@ -290,6 +303,8 @@ func resourceMetalReservedIPBlockRead(d *schema.ResourceData, meta interface{}) 
 		d.Set("description", *(reservedBlock.Description))
 	}
 	d.Set("global", reservedBlock.Global)
+
+	d.Set("tags", reservedBlock.Tags)
 
 	return nil
 }

@@ -93,6 +93,7 @@ The following arguments are supported:
 * `facility` - (Optional) Facility where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with `metro`
 * `metro` - (Optional) Metro where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with `facility`
 * `description` - (Optional) Arbitrary description
+* `tags` - (Optional) Tags attached to the reserved block
 
 ## Attributes Reference
 
